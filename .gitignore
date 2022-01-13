@@ -1,0 +1,6 @@
+.RData
+.Rhistory
+.Rapp.history
+.DS_Store
+*.csv
+.env
