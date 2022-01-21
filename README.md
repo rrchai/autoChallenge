@@ -1,5 +1,9 @@
 # challengeStarteR
 
+The goal of this project is to automate the steps of [DREAM Challenge Infrastructure](https://help.synapse.org/docs/Challenge-Infrastructure.2163409505.html). With current codebase, it can automate the first six steps and support only `Model-to-Data` Challenges for now.
+
+To be continued ...
+
 ## Installation
 
 1.  Clone this repo :
@@ -23,6 +27,6 @@
 ## Usage
 
 - arg1: string, challenge name
-- arg2: string, ~/local/path/to/save/template
+- arg2: string, ~/local/path/to/save/template. The default is used "./".
 
         Rscript startChallenge.R "Happy Challenge" "./"
