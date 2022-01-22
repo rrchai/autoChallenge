@@ -25,13 +25,17 @@ To be continued ...
 
 ## Usage
 
-- `Rscript startChallenge.R -h`
+```
+Rscript startChallenge.R -h
+```
 
-        usage: startChallenge name [Options]
-        
-        Required:
-          name        a challenge name
-        
-        Options:
-          -h, --help  show this help message and exit
-          -d          local directory to save workflow repo (default: '.')
+```
+usage: startChallenge name [Options]
+
+Required:
+        name        a challenge name
+
+Options:
+        -h, --help  show this help message and exit
+        -d          local directory to save workflow repo (default: '.')
+```
