@@ -2,6 +2,7 @@ suppressPackageStartupMessages({
   library(reticulate)
   library(dplyr)
   library(glue)
+  library(argparse)
 })
 use_condaenv("challenge_env", required = TRUE)
 cu <- import("challengeutils")

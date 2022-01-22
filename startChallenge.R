@@ -1,17 +1,27 @@
 source("load.R")
 
-args <- commandArgs(trailingOnly = TRUE)
-if (is.na(args[1])) stop("Challenge Name is required")
-if (is.na(args[2])) args[2] <- "./"
-# if (is.na(args[3])) args[3] <- TRUE
-# if (is.na(args[4])) args[4] <- TRUE
+parser <- ArgumentParser(prog = "startChallenge", 
+                         usage = '%(prog)s name [Options]',
+                         add_help = FALSE)
+reqArgs <- parser$add_argument_group("Required")
+optArgs <- parser$add_argument_group("Options")
+reqArgs$add_argument("name", metavar = "name",
+                    type = "character",
+                    help = "a challenge name")
+optArgs$add_argument("-h", "--help", action = "help",
+                     help="show this help message and exit")
+optArgs$add_argument("-d", metavar = "",
+                  type = "character", default = ".",
+                  help = "local directory to save workflow repo (default: '.')")
+args <- parser$parse_args()
 
-challenge_name <- toString(args[1])
+# read input
+challenge_name <- args[[1]]
+local_dest <- args[[2]]
 
 #### Set Path ####
-local_dest <- toString(args[2])
 system(sprintf("mkdir -p %s", local_dest))
-# create the template repo name, 
+# create the template repo name,
 # e.g. 'happy challenge' will be use 'happy-challenge-infra' as repo name
 folder_name <- trimws(challenge_name, "both") %>%
   gsub(" ", "-", .) %>%
@@ -41,9 +51,9 @@ eval_res <- synObj$restGET(glue("/entity/{project_ids$live_projectid}/evaluation
 #### Add Submission View to Table ####
 message(">>>>>>>>>> Creating Submission View Tables ... >>>>>>>>>>")
 submissionView <- lapply(eval_res, function(eval) {
-  
-  schema <- syn$SubmissionViewSchema(name = eval$name, 
-                                     parent= project_ids$staging_projectid , 
+
+  schema <- syn$SubmissionViewSchema(name = eval$name,
+                                     parent= project_ids$staging_projectid ,
                                      scopes = list(eval$id))
   schema <- synObj$store(schema)
 })
@@ -53,8 +63,9 @@ submissionView <- lapply(eval_res, function(eval) {
 message(">>>>>>>>>> Create Workflow Template Github Repos ... >>>>>>>>>>")
 # only work for model-to-data now
 template_name <- ifelse(
-  as.logical(TRUE), 
-  "model-to-data-challenge-workflow", 
+  # TO-DO: support data-to-model
+  as.logical(TRUE),
+  "model-to-data-challenge-workflow",
   "data-to-model-challenge-workflow"
   )
 template_url <- paste0("https://github.com/Sage-Bionetworks-Challenges/", template_name)
@@ -111,14 +122,14 @@ workflow_files <- lapply(c("main", "develop"), function(branch) {
 # # goldstandard file
 # data_folder <- syn$Folder('Data', parent = project_ids$staging_projectid)
 # invisible(data_folder <- synObj$store(data_folder))
-# 
+#
 # gs <- data.frame(test = 1:10, prediction = sample(c(0, 1), 10, replace = TRUE))
 # write.csv(gs, "goldstandard.csv", row.names = FALSE)
 # gs_file <- syn$File("goldstandard.csv",
 #                     name = "goldstandard.csv",
 #                     parent = data_folder$id)
 # gs_file <- synObj$store(gs_file)
-# 
+#
 # input_data <- data.frame(test = 1:10, feature = sample(1:100, 10, replace = TRUE))
 # write.csv(input_data, "input_data.csv", row.names = FALSE)
 
@@ -126,18 +137,18 @@ workflow_files <- lapply(c("main", "develop"), function(branch) {
 # {defaultQ: main, testQ: dev}
 eval_template <- sprintf(
   '{"%s": "%s", "%s": "%s"}',
-  eval_res[[1]]$id, workflow_files[[1]]$id, 
+  eval_res[[1]]$id, workflow_files[[1]]$id,
   eval_res[[2]]$id, workflow_files[[2]]$id
 )
 
-cat("\n\n")
-cat("==================================================")
-cat("========= output for workflow config =============")
-cat(glue(
+message("\n\n")
+message("==================================================")
+message("========= output for workflow config =============")
+message(glue(
   '
   WORKFLOW_OUTPUT_ROOT_ENTITY_ID={logs_folder$id}
   EVALUATION_TEMPLATES={eval_template}
   '
 ))
-cat("==================================================")
-cat("==================================================")
+message("==================================================")
+message("==================================================")

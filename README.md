@@ -19,14 +19,19 @@ To be continued ...
 
         R -f install-pkgs.R
 
-4.  Install and Config `GitHub CLI` if you haven't ([gh manual](https://cli.github.com/manual/))
+4.  Config `GitHub CLI` if you haven't ([gh manual](https://cli.github.com/manual/))
 
-        conda install gh --channel conda-forge
         gh auth login
 
 ## Usage
 
-- arg1: string, challenge name
-- arg2: string, ~/local/path/to/save/template. The default is used "./".
+- `Rscript startChallenge.R -h`
 
-        Rscript startChallenge.R "Happy Challenge" "./"
+        usage: startChallenge name [Options]
+        
+        Required:
+          name        a challenge name
+        
+        Options:
+          -h, --help  show this help message and exit
+          -d          local directory to save workflow repo (default: '.')

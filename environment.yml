@@ -1,9 +1,11 @@
 name: challenge_env
 channels:
   - defaults
+  - conda-forge
 dependencies:
   - python==3.8.8
   - pip>=20.1.1
+  - gh==2.4.0
   - pip:
     - synapseclient>=2.5.0
     - challengeutils>=1.6.0
