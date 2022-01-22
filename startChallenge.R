@@ -1,18 +1,19 @@
 source("load.R")
 
+#### Set Arguments ####
 parser <- ArgumentParser(prog = "startChallenge", 
                          usage = '%(prog)s name [Options]',
                          add_help = FALSE)
 reqArgs <- parser$add_argument_group("Required")
 optArgs <- parser$add_argument_group("Options")
 reqArgs$add_argument("name", metavar = "name",
-                    type = "character",
-                    help = "a challenge name")
+                     type = "character",
+                     help = "a challenge name")
 optArgs$add_argument("-h", "--help", action = "help",
                      help="show this help message and exit")
 optArgs$add_argument("-d", metavar = "",
-                  type = "character", default = ".",
-                  help = "local directory to save workflow repo (default: '.')")
+                     type = "character", default = ".",
+                     help = "local directory to save workflow repo (default: '.')")
 args <- parser$parse_args()
 
 # read input
