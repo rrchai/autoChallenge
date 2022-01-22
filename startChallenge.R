@@ -20,12 +20,16 @@ optArgs$add_argument("-g", metavar = "",
 optArgs$add_argument("-i", metavar = "",
                      type = "character", default = "test",
                      help = "path to directory where stores input data (default: 'test')")
+optArgs$add_argument("-m", metavar = "",
+                     type = "character", default = "test",
+                     help = "path to directory where stores model (default: 'test')")
 args <- parser$parse_args()
 # read input
 challenge_name <- args[[1]]
 local_dest <- args[[2]]
 gs_path <- args[[3]]
 input_path <- args[[4]]
+model_path <- args[[5]]
 # validation
 if (!file.exists(gs_path)) stop(sprintf("%s: No such file", gs_path))
 # if (!file.exists(input_path)) stop(sprintf("%s: No such file", input_path))
@@ -178,8 +182,53 @@ workflow_cwl <- updateWorkflow(file.path(local_folder_path, "workflow.cwl"),
 # score_cwl <- updateScore()
 
 
-#### Config Workflow ####
+#### Start Instance ####
+message(">>>>>>>>>> Start Instance ... >>>>>>>>>>")
+system(
+  glue(
+    '
+    cp .env /{local_dest}/SynapseWorkflowOrchestrator/;
+    docker-compose up -d
+    '
+  )
+)
+
+
+#### Dockerize a Fake model ####
 message(">>>>>>>>>> Dockerize a Testing Model ... >>>>>>>>>>")
+# dockerize a testing model
+docker_name <- glue('{eval_res[[2]]$name}-model:test')
+system(
+  glue(
+    '
+    cd {model_path};
+    mkdir -p output;
+    docker build -t {eval_res[[2]]$name}-model:test .
+    docker run \
+      -v {input_path}/:/data:ro \
+      -v $(pwd)/output:/output:rw \
+      {docker_name};
+    '
+  )
+)
+# submit the dockerized model
+docker_submit_name <- glue('docker.synapse.org/{project_ids$staging_projectid}/{dock_name}')
+system(
+  glue(
+    '
+    docker tag {dock_name} {docker_submit_name};
+    docker login docker.synapse.org;
+    docker push {docker_submit_name};
+    docker image rm {dock_name} {docker_submit_name} 
+    '
+  )
+)
 
-
-
+#### Submit a Fake model ####
+message(">>>>>>>>>> Submit a Fake model ... >>>>>>>>>>")
+submission <- synObj$submit(
+  evaluation = eval_res[[2]]$id,
+  entity = "placeholder",
+  name = "test",
+  dockerTag = "test"
+)
