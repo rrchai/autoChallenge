@@ -38,4 +38,6 @@ Required:
 Options:
         -h, --help  show this help message and exit
         -d          local directory to save workflow repo (default: '.')
+        -g          path to goldstandard file (default: 'test/goldstandard.csv')
+        -i          path to directory where stores input data (default: 'test')
 ```

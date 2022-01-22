@@ -14,16 +14,26 @@ optArgs$add_argument("-h", "--help", action = "help",
 optArgs$add_argument("-d", metavar = "",
                      type = "character", default = ".",
                      help = "local directory to save workflow repo (default: '.')")
+optArgs$add_argument("-g", metavar = "",
+                     type = "character", default = "test/goldstandard.csv",
+                     help = "path to goldstandard file (default: 'test/goldstandard.csv')")
+optArgs$add_argument("-i", metavar = "",
+                     type = "character", default = "test",
+                     help = "path to directory where stores input data (default: 'test')")
 args <- parser$parse_args()
-
 # read input
 challenge_name <- args[[1]]
 local_dest <- args[[2]]
+gs_path <- args[[3]]
+input_path <- args[[4]]
+# validation
+if (!file.exists(gs_path)) stop(sprintf("%s: No such file", gs_path))
+# if (!file.exists(input_path)) stop(sprintf("%s: No such file", input_path))
 
 #### Set Path ####
 system(sprintf("mkdir -p %s", local_dest))
 # create the template repo name,
-# e.g. 'happy challenge' will be use 'happy-challenge-infra' as repo name
+# e.g. 'happy challenge' will be used 'happy-challenge-infra' as repo name
 folder_name <- trimws(challenge_name, "both") %>%
   gsub(" ", "-", .) %>%
   gsub("-+", "-", .) %>%
@@ -118,38 +128,58 @@ workflow_files <- lapply(c("main", "develop"), function(branch) {
   invisible(workflow_file <- synObj$store(workflow_file))
 })
 
-#### Add Temporary Testing Files ####
-# message("Create Testing Files ... ")
-# # goldstandard file
-# data_folder <- syn$Folder('Data', parent = project_ids$staging_projectid)
-# invisible(data_folder <- synObj$store(data_folder))
-#
-# gs <- data.frame(test = 1:10, prediction = sample(c(0, 1), 10, replace = TRUE))
-# write.csv(gs, "goldstandard.csv", row.names = FALSE)
-# gs_file <- syn$File("goldstandard.csv",
-#                     name = "goldstandard.csv",
-#                     parent = data_folder$id)
-# gs_file <- synObj$store(gs_file)
-#
-# input_data <- data.frame(test = 1:10, feature = sample(1:100, 10, replace = TRUE))
-# write.csv(input_data, "input_data.csv", row.names = FALSE)
+### Add Temporary Testing Files ####
+message(">>>>>>>>>> Create Dummy Tesing Files ... >>>>>>>>>>")
+# create folder to store data
+data_folder <- syn$Folder('Data', parent = project_ids$staging_projectid)
+invisible(data_folder <- synObj$store(data_folder))
+# upload the goldstandard file
+gs_name <- basename(gs_path)
+gs_file <- syn$File(gs_path,
+                    name = gs_name,
+                    parent = data_folder$id)
+gs_file <- synObj$store(gs_file)
+
 
 #### Config Workflow ####
+message(">>>>>>>>>> Config Workflow ... >>>>>>>>>>")
 # {defaultQ: main, testQ: dev}
 eval_template <- sprintf(
   '{"%s": "%s", "%s": "%s"}',
   eval_res[[1]]$id, workflow_files[[1]]$id,
   eval_res[[2]]$id, workflow_files[[2]]$id
 )
+# add Log synID and Evaluation to .env
+cat(file = ".env", append = TRUE,
+  glue('\n\nWORKFLOW_OUTPUT_ROOT_ENTITY_ID={logs_folder}\nEVALUATION_TEMPLATES={eval_template}'
+  )
+)    
+# config SynapseWorkflowOrchestrator repo
+system(
+  glue(
+    '
+    cd {local_dest};
+    git clone https://github.com/Sage-Bionetworks/SynapseWorkflowOrchestrator.git --quiet;
+    '
+  )
+)
+system(
+  glue('cp .env /{local_dest}/SynapseWorkflowOrchestrator/;')
+)
+# config workflow repo
+workflow_cwl <- updateWorkflow(file.path(local_folder_path, "workflow.cwl"),
+                               gs_id = gs_file$id,
+                               admin_id = synObj$credentials$username,
+                               admin_team_id = project_ids$admin_teamid,
+                               input_dir = tools::file_path_as_absolute(input_dir),
+                               file = file.path(local_folder_path, "workflow.cwl")
+                               )
+# validate_cwl <- updateValidate()
+# score_cwl <- updateScore()
 
-message("\n\n")
-message("==================================================")
-message("========= output for workflow config =============")
-message(glue(
-  '
-  WORKFLOW_OUTPUT_ROOT_ENTITY_ID={logs_folder$id}
-  EVALUATION_TEMPLATES={eval_template}
-  '
-))
-message("==================================================")
-message("==================================================")
+
+#### Config Workflow ####
+message(">>>>>>>>>> Dockerize a Testing Model ... >>>>>>>>>>")
+
+
+
