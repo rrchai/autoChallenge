@@ -29,7 +29,11 @@ Here are some steps the `autoChallenge` will automatically do it for you:
 
         R -f install-pkgs.R
 
-4.  Config [GitHub CLI] if you haven't:
+4. Create and modify the configuration file:
+
+        cp .envTemplate .env
+
+5.  Config [GitHub CLI] if you haven't:
 
         gh auth login
 
