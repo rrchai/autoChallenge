@@ -1,8 +1,18 @@
-# challengeStarteR
+# autoChallenge (Still Testing ...)
 
-The goal of this project is to automate the steps of [DREAM Challenge Infrastructure](https://help.synapse.org/docs/Challenge-Infrastructure.2163409505.html). With current codebase, it can automate the first six steps and support only `Model-to-Data` Challenges for now.
+The goal of this project is to automate the steps of [DREAM Challenge Infrastructure](https://help.synapse.org/docs/Challenge-Infrastructure.2163409505.html). With current codebase, it can support only `Model-to-Data` Challenges for now.
 
-To be continued ...
+Here are some steps the `autoChallenge` will automatically do it for you:
+
+- Create challenge sites & teams
+- Set up minimal requirements for infrastructure workflow:
+
+  - Create a workflow template repo in both Github and local
+  - Auto-config the [SynapseWorkflowOrchestrator] and [workflow template] repos
+  - Start the [SynapseWorkflowOrchestrator] container in the background
+  - Submit a model to test whether the infra setup works (Not Yet)
+
+- To be continued ...
 
 ## Installation
 
@@ -19,25 +29,28 @@ To be continued ...
 
         R -f install-pkgs.R
 
-4.  Config `GitHub CLI` if you haven't ([gh manual](https://cli.github.com/manual/))
+4.  Config [GitHub CLI] if you haven't:
 
         gh auth login
 
 ## Usage
 
-```
-Rscript startChallenge.R -h
-```
+- Check the usage:
 
-```
-usage: startChallenge name [Options]
+        Rscript autoChallenge.R -h
 
-Required:
-        name        a challenge name
+- Create a basic challenge:
 
-Options:
-        -h, --help  show this help message and exit
-        -d          local directory to save workflow repo (default: '.')
-        -g          path to goldstandard file (default: 'test/goldstandard.csv')
-        -i          path to directory where stores input data (default: 'test')
-```
+        Rscript autoChallenge.R "<your-challenge-name>"
+
+## TO-DO
+
+- Get submitted docker synId in the synapse's DockerRepository in support of auto-submitting the model
+- Enable auto setup linux environment if running in the instance (not test `setup-instance.sh` yet)
+- Enable to use customizable validation/scoring scripts (if needed)
+
+<!-- Links -->
+
+[synapseworkfloworchestrator]: https://github.com/Sage-Bionetworks/SynapseWorkflowOrchestrator
+[workflow template]: https://github.com/Sage-Bionetworks-Challenges/model-to-data-challenge-workflow
+[github cli]: https://cli.github.com/manual/

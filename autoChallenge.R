@@ -1,7 +1,7 @@
 # usage:
 
 #### Set Arguments ####
-parser <- argparse::ArgumentParser(prog = "startChallenge", usage = '%(prog)s name [-h] [Args]')
+parser <- argparse::ArgumentParser(prog = "Rscript autoChallenge.R", usage = '%(prog)s name [-h] [Args]')
 reqArgs <- parser$add_argument_group("Required")
 optArgs <- parser$add_argument_group("Options")
 reqArgs$add_argument("name", metavar = "name",
@@ -12,13 +12,13 @@ optArgs$add_argument("-o", metavar = "",
                      help = "local directory to save workflow repo (default: './')")
 optArgs$add_argument("-g", metavar = "",
                      type = "character", default = "test/data/goldstandard.csv",
-                     help = "path to goldstandard file (default: 'test/data/goldstandard.csv')")
+                     help = "path to goldstandard file (Default will be to use the testing file in 'test/')")
 optArgs$add_argument("-i", metavar = "",
                      type = "character", default = "test/data/input_data.csv",
-                     help = "path to directory where stores input data (default: 'test/data/input_data.csv')")
+                     help = "path to input data's directory (Default will be to use the testing file in 'test/')")
 optArgs$add_argument("-d", metavar = "",
                      type = "character", default = "test/",
-                     help = "path to directory where stores Dockerfile for model (default: 'test/')")
+                     help = "path to model's directory (default: 'test/')")
 args <- parser$parse_args()
 
 # read input
