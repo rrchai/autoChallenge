@@ -24,7 +24,7 @@ message("\n>>>>>>>>>> Submitting a Testing Model to Synapse ... >>>>>>>>>>")
 message("Be patient. It may take a while ... ")
 # submit the dockerized model
 docker_submit_name <- glue(
-  'docker.synapse.org/{project_ids$staging_projectid}/{docker_name}:test'
+  'docker.synapse.org/{project_ids$staging_projectid}/{docker_name}'
 )
 system(
   glue(
@@ -32,6 +32,8 @@ system(
     docker tag {docker_name} {docker_submit_name};
     docker login docker.synapse.org;
     docker push {docker_submit_name};
+    docker ps -a | awk "{ print $1,$2 }" | grep {docker_name} | \ 
+      awk "{print $1 }" | xargs -I {} docker rm {};
     docker image rm {docker_name} {docker_submit_name} 
     '
   )

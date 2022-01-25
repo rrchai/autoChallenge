@@ -7,7 +7,7 @@ workflow_cwl_path <- file.path(local_workflow_path, "workflow.cwl")
 workflow_cwl <- updateWorkflow(
   cwl = workflow_cwl_path,
   gs_id = gs_file$id,
-  admin_id = synObj$credentials$username,
+  admin_id = project_ids$admin_teamid,
   admin_team_id = project_ids$admin_teamid,
   input_dir = input_dir,
   file = workflow_cwl_path

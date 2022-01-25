@@ -16,7 +16,7 @@ readRenviron(".env")
 # login to synapse
 synObj$login(
   email = Sys.getenv("SYNAPSE_USERNAME"),
-  apiKey = Sys.getenv("SYNAPSE_PASSWORD"),
+  password = Sys.getenv("SYNAPSE_PASSWORD"),
   silent = TRUE
 )
 

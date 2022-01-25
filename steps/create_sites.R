@@ -2,7 +2,7 @@
 ## Create Projects and Teams
 
 message("\n>>>>>>>>>> Create Challenge Sites and Teams... >>>>>>>>>>")
-project_ids <- cu$createchallenge$main(synObj, "checkChallenge")
+project_ids <- cu$createchallenge$main(synObj, challenge_name)
 
 
 ## Add Evaluation Queue
@@ -14,8 +14,9 @@ project_ids <- cu$createchallenge$main(synObj, "checkChallenge")
 #     No Evaluation found with name TEST
 
 message("\n>>>>>>>>>> Adding a Testing Evaluation Queue ... >>>>>>>>>>")
+test_eval_name <- "TEST Submission"
 test_eval <- syn$evaluation$Evaluation(
-  name = "TEST Submission",
+  name = glue('{challenge_name} {test_eval_name}'),
   description = "This is a testing evaluation queue",
   contentSource = project_ids$live_projectid
 )
@@ -29,7 +30,7 @@ eval_res <- synObj$restGET(glue("/entity/{project_ids$live_projectid}/evaluation
 message("\n>>>>>>>>>> Creating Submission View Tables ... >>>>>>>>>>")
 # submissionView <- lapply(eval_res, function(eval) {})
 schema <- syn$SubmissionViewSchema(
-  name = eval_res[[2]]$name,
+  name = test_eval_name,
   parent= project_ids$staging_projectid,
   scopes = list(eval_res[[2]]$id)
 )

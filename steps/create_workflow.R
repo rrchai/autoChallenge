@@ -25,15 +25,16 @@ system(
 )
 
 # create dev branch
-invisible(system(
+system(
   glue(
     '
     cd {local_workflow_path};
+    git pull --ff-only;
     git checkout -B develop --quiet;
     git push origin develop;
     '
   )
-))
+)
 
 
 #### Link Project to Workflow ####

@@ -41,9 +41,9 @@ def updateWorkflow(cwl,
     """
     with open(cwl, 'r') as cwl_file:
         f = yaml.load(cwl_file)
-        f["steps"]["download_goldstandard"]["in"][0]["id"] = dqString(gs_id)
-        f["steps"]["set_submitter_folder_permissions"]["in"][1]["id"] = dqString(admin_id)
-        f["steps"]["set_admin_folder_permissions"]["in"][1]["id"] = dqString(admin_team_id)
+        f["steps"]["download_goldstandard"]["in"][0]["valueFrom"] = dqString(gs_id)
+        f["steps"]["set_submitter_folder_permissions"]["in"][1]["valueFrom"] = dqString(admin_id)
+        f["steps"]["set_admin_folder_permissions"]["in"][1]["valueFrom"] = dqString(admin_team_id)
         f["steps"]["run_docker"]["in"][9]["valueFrom"] = dqString(input_dir)
 
     write_cwl(f, file)

@@ -5,7 +5,7 @@ suppressMessages(library(data.table))
 args        <- commandArgs(trailingOnly=TRUE)
 infile      <- fread(args[1], data.table = FALSE)
 
-prediction  <- data.frame(id = infile$test, prediction = ifelse(infile$feature %% 2 == 0, 1, 0))
+prediction  <- data.frame(test = infile$test, prediction = ifelse(infile$feature %% 2 == 0, 1, 0))
 
 write.csv(prediction, file = args[2], quote = FALSE, row.names = FALSE)
 
