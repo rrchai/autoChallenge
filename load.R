@@ -3,7 +3,6 @@ suppressPackageStartupMessages({
   library(dplyr)
   library(glue)
   library(argparse)
-  library(yaml)
 })
 use_condaenv("challenge_env", required = TRUE)
 cu <- import("challengeutils")
@@ -12,7 +11,10 @@ source_python("utils/updateWorkflow.py")
 synObj <- syn$Synapse()
 
 # read env variable
-readRenviron(".env")
+# readRenviron(".env")
+env <- read.delim(".env", comment.char = "#", header = FALSE, sep = "=")
+env <- setNames(as.list(env[[2]]), env[[1]])
+
 # login to synapse
 synObj$login(
   email = Sys.getenv("SYNAPSE_USERNAME"),
@@ -21,3 +23,9 @@ synObj$login(
 )
 
 source("utils/utils.R")
+
+envFile <- file(".test")
+tryCatch(
+  writeLines(config, envFile),
+  finally=close(envFile)
+)

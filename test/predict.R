@@ -1,9 +1,7 @@
 # fake prediction model to test infra
 
-suppressMessages(library(data.table))
-
 args        <- commandArgs(trailingOnly=TRUE)
-infile      <- fread(args[1], data.table = FALSE)
+infile      <- read.csv(args[1])
 
 prediction  <- data.frame(test = infile$test, prediction = ifelse(infile$feature %% 2 == 0, 1, 0))
 

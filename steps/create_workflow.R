@@ -14,6 +14,9 @@ remote_repo_url <- system(intern = TRUE,
   glue('gh repo create {folder_name} -p {template_url} --public;')
 )
 # clone the repo
+# TODO: figure out how gh repo create --clone work with -p
+# wait 5s for now to let template downloading completes
+Sys.sleep(5)
 message(glue("Cloning '{remote_repo_url}' into '{workflow_dir}' ..."))
 system(
   glue(
@@ -29,7 +32,6 @@ system(
   glue(
     '
     cd {local_workflow_path};
-    git pull --ff-only;
     git checkout -B develop --quiet;
     git push origin develop;
     '

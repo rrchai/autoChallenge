@@ -1,6 +1,4 @@
-FROM r-base:4.0.2
-
-RUN R -e "install.packages('data.table', repos = 'http://cran.us.r-project.org')"
+FROM rhub/r-minimal
 
 COPY predict.R /predict.R
 

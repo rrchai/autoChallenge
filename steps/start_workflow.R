@@ -44,11 +44,16 @@ eval_template <- sprintf(
   eval_res[[1]]$id, workflow_files[[1]]$id,
   eval_res[[2]]$id, workflow_files[[2]]$id
 )
-# TODO: ensure these two properties were not in .env
-# add Log synID and Evaluation to .env
-cat(file = ".env", append = TRUE,
-    glue('\n\nWORKFLOW_OUTPUT_ROOT_ENTITY_ID={logs_folder$id}\nEVALUATION_TEMPLATES={eval_template}')
-)    
+# update .env
+env$WORKFLOW_OUTPUT_ROOT_ENTITY_ID <- logs_folder$id
+env$EVALUATION_TEMPLATES <- eval_template
+# write out new .env
+env_v <- sapply(seq_along(env), function(i) glue('{names(env[i])}={env[i]}'))
+envFile <- file(glue('{workflow_dir}/SynapseWorkflowOrchestrator/.env'))
+tryCatch(
+  writeLines(env_v, envFile),
+  finally=close(envFile)
+)
 
 
 #### Start Instance ####
@@ -59,8 +64,8 @@ system(
   glue(
     '
     cp .env {workflow_dir}/SynapseWorkflowOrchestrator/;
-    cd {workflow_dir}/SynapseWorkflowOrchestrator/
-    docker-compose up -d
+    cd {workflow_dir}/SynapseWorkflowOrchestrator/;
+    docker-compose up -d;
     '
   )
 )
