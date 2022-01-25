@@ -1,6 +1,8 @@
-from ruamel.yaml import YAML
+import ruamel.yaml
 
-yaml = YAML()
+dqString = ruamel.yaml.scalarstring.DoubleQuotedScalarString
+yaml = ruamel.yaml.YAML()
+yaml.preserve_quotes = True
 
 
 def write_cwl(cwl, file):
@@ -14,7 +16,7 @@ def write_cwl(cwl, file):
         save a updated .cwl file to the defined path
     """
     with open(file, 'w') as cwl_file:
-        yaml.indent(mapping=2, sequence=4, offset=2)
+        yaml.indent(mapping = 2, sequence = 4, offset = 2)
         yaml.dump(cwl, cwl_file)
 
 
@@ -39,10 +41,10 @@ def updateWorkflow(cwl,
     """
     with open(cwl, 'r') as cwl_file:
         f = yaml.load(cwl_file)
-        f["steps"]["download_goldstandard"]["in"][0]["id"] = gs_id
-        f["steps"]["set_submitter_folder_permissions"]["in"][1]["id"] = admin_id
-        f["steps"]["set_admin_folder_permissions"]["in"][1]["id"] = admin_team_id
-        f["steps"]["run_docker"]["in"][9]["valueFrom"] = input_dir
+        f["steps"]["download_goldstandard"]["in"][0]["id"] = dqString(gs_id)
+        f["steps"]["set_submitter_folder_permissions"]["in"][1]["id"] = dqString(admin_id)
+        f["steps"]["set_admin_folder_permissions"]["in"][1]["id"] = dqString(admin_team_id)
+        f["steps"]["run_docker"]["in"][9]["valueFrom"] = dqString(input_dir)
 
     write_cwl(f, file)
 
