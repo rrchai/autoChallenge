@@ -46,13 +46,13 @@ system(
 # eyeing this ticket: https://sagebionetworks.jira.com/browse/PLFM-4898
 # for now, need to take users input to get entity id
 docker_url <- glue('https://www.synapse.org/#!Synapse:{project_ids$staging_projectid}/docker/')
-cat(glue("Go to the docker repo at {docker_url}\n"))
-cat("Enter the entity Id of docker repo:\n")
+message(glue("Go to the docker repo at {docker_url}"))
+message("Enter the entity Id of docker repo:")
 docker_id <- readLines("stdin", n = 1)
 # submit the model
 submission <- synObj$submit(
   evaluation = eval_res[[2]]$id,
   entity = docker_id,
-  name = docker_repo_name,
+  name = "initial test",
   dockerTag = docker_tag
 )

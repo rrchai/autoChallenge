@@ -1,6 +1,7 @@
 # usage:
 
 #### Set Arguments ####
+
 parser <- argparse::ArgumentParser(prog = "Rscript autoChallenge.R", usage = '%(prog)s name [-h] [Args]')
 reqArgs <- parser$add_argument_group("Required")
 optArgs <- parser$add_argument_group("Options")
@@ -74,12 +75,51 @@ source("steps/create_workflow.R")
 
 
 #### Start Workflow ####
+
 confirm("Do you argee to auto config and start the workflow for you ?")
 source("steps/start_workflow.R")
 
 
 #### Submit a Testing Model ####
+
 confirm("Do you argee to submit a model to test infra for you ?")
 source("steps/submit_models.R")
 
 
+#### Send Email with Links ####
+
+msg <- glue(
+  '
+  Hello {synObj$username},<br>
+  <ul>
+    <li>
+      <a href="{project_ids$staging_projectid}" target="_blank">Staging Site</a>
+    </li>
+    <li>
+      <a href="{project_ids$live_projectid}" target="_blank">Live Site</a>
+    </li>
+    <li>
+      <a href="https://www.synapse.org/#!TeamSearch:{challenge_name}" 
+        target="_blank">Teams
+      </a>
+    </li>
+    <li>
+      <a href="https://www.synapse.org/#!Synapse:{schema$id}/tables/" 
+        target="_blank">Submission View
+      </a>
+    </li>
+    <li>
+      <a href="{remote_repo_url}" target="_blank">Workflow Github Repo</a>
+    </li>
+  </ul>
+  '
+)
+user_id <- synObj$getUserProfile(synObj$username)["ownerId"]
+invisible(
+  synObj$sendMessage(
+    userIds = list(user_id), 
+    messageSubject = glue("Links - {challenge_name}"),
+    messageBody = msg, 
+    contentType = "text/html"
+  )
+)

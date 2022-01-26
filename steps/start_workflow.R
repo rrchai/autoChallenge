@@ -52,7 +52,7 @@ env_v <- sapply(seq_along(env), function(i) glue('{names(env[i])}={env[i]}'))
 envFile <- file(glue('{workflow_dir}/SynapseWorkflowOrchestrator/.env'))
 tryCatch(
   writeLines(env_v, envFile),
-  finally=close(envFile)
+  finally = close(envFile)
 )
 
 
@@ -63,7 +63,6 @@ message("Be patient. It may take a while ... ")
 system(
   glue(
     '
-    cp .env {workflow_dir}/SynapseWorkflowOrchestrator/;
     cd {workflow_dir}/SynapseWorkflowOrchestrator/;
     docker-compose up -d;
     '

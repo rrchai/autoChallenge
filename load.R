@@ -12,13 +12,19 @@ synObj <- syn$Synapse()
 
 # read env variable
 # readRenviron(".env")
+# synObj$login(
+#   email = Sys.getenv("SYNAPSE_USERNAME"),
+#   password = Sys.getenv("SYNAPSE_PASSWORD"),
+#   silent = TRUE
+# )
+
 env <- read.delim(".env", comment.char = "#", header = FALSE, sep = "=")
 env <- setNames(as.list(env[[2]]), env[[1]])
 
 # login to synapse
 synObj$login(
-  email = Sys.getenv("SYNAPSE_USERNAME"),
-  password = Sys.getenv("SYNAPSE_PASSWORD"),
+  email = env$SYNAPSE_USERNAME,
+  password = env$SYNAPSE_PASSWORD,
   silent = TRUE
 )
 
