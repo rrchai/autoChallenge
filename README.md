@@ -1,8 +1,8 @@
-# autoChallenge (Still Testing ...)
+# autoChallenge
 
 The goal of this project is to automate the steps of [DREAM Challenge Infrastructure](https://help.synapse.org/docs/Challenge-Infrastructure.2163409505.html). With current codebase, it can support only `Model-to-Data` Challenges for now.
 
-Here are some steps the `autoChallenge` will automatically do it for you:
+Here are some steps the `autoChallenge` will automatically do for you:
 
 - Create challenge sites & teams
 - Set up minimal requirements for infrastructure workflow:
@@ -10,9 +10,11 @@ Here are some steps the `autoChallenge` will automatically do it for you:
   - Create a workflow template repo in both Github and local
   - Auto-config the [SynapseWorkflowOrchestrator] and [workflow template] repos
   - Start the [SynapseWorkflowOrchestrator] container in the background
-  - Submit a model to test whether the infra setup works (Not Yet)
+  - Submit a simple dockerized model to test whether the infra setup works
+- Send the user an email with most essential links
 
-- To be continued ...
+Each step will ask users for prompts (yes/no). `autoChallenge` is still in the testing phase and has not yet been tested by others except myself.
+
 
 ## Installation
 
@@ -49,9 +51,10 @@ Here are some steps the `autoChallenge` will automatically do it for you:
 
 ## TO-DO
 
-- Get submitted docker synId in the synapse's DockerRepository in support of auto-submitting the model
-- Enable auto setup linux environment if running in the instance (not test `setup-instance.sh` yet)
-- Enable to use customizable validation/scoring scripts (if needed)
+- Get entity Id of submitted docker repo in the synapse in support of auto-submitting the model (wait to see the updates from this [jira ticket](https://sagebionetworks.jira.com/browse/PLFM-4898))
+- Enable auto create a challenge in a linux environment assuming a SC instance (test `setup-instance.sh`)
+- Enable to use customizable validation/scoring scripts if needed
+- Support `Data-to-Model` if needed
 
 <!-- Links -->
 

@@ -88,6 +88,7 @@ source("steps/submit_models.R")
 
 #### Send Email with Links ####
 
+confirm("Do you argee to email the links of this challenge to you ?")
 msg <- glue(
   '
   Hello {synObj$username},<br>
