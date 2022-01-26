@@ -23,9 +23,3 @@ synObj$login(
 )
 
 source("utils/utils.R")
-
-envFile <- file(".test")
-tryCatch(
-  writeLines(config, envFile),
-  finally=close(envFile)
-)
