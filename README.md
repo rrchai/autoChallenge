@@ -1,6 +1,6 @@
 # autoChallenge
 
-The goal of this project is to automate the steps of [DREAM Challenge Infrastructure](https://help.synapse.org/docs/Challenge-Infrastructure.2163409505.html). With current codebase, it can support only `Model-to-Data` Challenges for now.
+The goal of this project is to automate the steps of [DREAM Challenge Infrastructure](https://help.synapse.org/docs/Challenge-Infrastructure.2163409505.html) before our Challenge Platform is released. It will automatically create a Challenge and set up a basic testing infrastructure. With current codebase, it can support only `Model-to-Data` Challenges for now.
 
 Here are some steps the `autoChallenge` will automatically do for you:
 
@@ -11,11 +11,11 @@ Here are some steps the `autoChallenge` will automatically do for you:
   - Auto-config the [SynapseWorkflowOrchestrator] and [workflow template] repos (the changes of workflow will be pushed to its `develop` branch)
   - Start the [SynapseWorkflowOrchestrator] container in the background
   - Submit a simple dockerized model to test whether the infra setup works
+
 - Send the user an email with most essential links
 - Create a PR to update `main` branch of workflow repo
 
 Each step will ask users for prompts (yes/no). `autoChallenge` is still in the testing phase and has not yet been tested by others except myself.
-
 
 ## Installation
 
@@ -32,7 +32,7 @@ Each step will ask users for prompts (yes/no). `autoChallenge` is still in the t
 
         R -f install-pkgs.R
 
-4. Create and modify the configuration file:
+4.  Create and modify the configuration file:
 
         cp .envTemplate .env
 
