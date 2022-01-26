@@ -21,7 +21,7 @@ Each step will ask users for prompts (yes/no). `autoChallenge` is still in the t
 
 1.  Clone this repo :
 
-        git clone https://github.com/rrchai/challengeStarteR.git
+        git clone https://github.com/rrchai/autoChallenge.git
 
 2.  Create and activate a conda environment:
 
@@ -53,7 +53,6 @@ Each step will ask users for prompts (yes/no). `autoChallenge` is still in the t
 ## TO-DO
 
 - Get entity Id of submitted docker repo in the synapse in support of auto-submitting the model (wait to see the updates from this [jira ticket](https://sagebionetworks.jira.com/browse/PLFM-4898))
-- Enable auto create a challenge in a linux environment assuming a SC instance (test `setup-instance.sh`)
 - Enable to use customizable validation/scoring scripts if needed
 - Support `Data-to-Model` if needed
 

@@ -7,7 +7,7 @@ pkg_list <- c(
   "dplyr", 
   "glue", 
   "argparse",
-  "yaml",
+  "yaml"
 )
 
 pacman::p_load(pkg_list, character.only = TRUE)

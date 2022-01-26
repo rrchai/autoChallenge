@@ -10,3 +10,4 @@ dependencies:
     - synapseclient>=2.5.0
     - challengeutils>=1.6.0
     - ruamel.yaml==0.17.20
+    - cwltool>=3.1.2
