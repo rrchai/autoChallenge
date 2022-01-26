@@ -8,10 +8,11 @@ Here are some steps the `autoChallenge` will automatically do for you:
 - Set up minimal requirements for infrastructure workflow:
 
   - Create a workflow template repo in both Github and local
-  - Auto-config the [SynapseWorkflowOrchestrator] and [workflow template] repos
+  - Auto-config the [SynapseWorkflowOrchestrator] and [workflow template] repos (the changes of workflow will be pushed to its `develop` branch)
   - Start the [SynapseWorkflowOrchestrator] container in the background
   - Submit a simple dockerized model to test whether the infra setup works
 - Send the user an email with most essential links
+- Create a PR to update `main` branch of workflow repo
 
 Each step will ask users for prompts (yes/no). `autoChallenge` is still in the testing phase and has not yet been tested by others except myself.
 

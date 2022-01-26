@@ -124,3 +124,22 @@ invisible(
     contentType = "text/html"
   )
 )
+
+
+#### Create a PR to Update Main ####
+
+confirm("Do you argee to create a PR to update 'main' branch of the workflow repo?")
+system(
+  '
+  gh pr create -a @me -B main -H develop -t "Update Main Branch" -b "Update *.cwl"
+  '
+)
+message(sprintf(
+  '
+  (๑ᵔ⌔ᵔ๑)\n
+  Congratulations !!! %s has been set up !\n
+  Please check your email for more details.\n
+  Thank you!\n
+  (*^_^*)
+  ', challenge_name
+))
