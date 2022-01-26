@@ -15,7 +15,7 @@ Here are some steps the `autoChallenge` will automatically do for you:
 - Send the user an email with most essential links
 - Create a PR to update `main` branch of workflow repo
 
-Each step will ask users for prompts (yes/no). `autoChallenge` is still in the testing phase and has not yet been tested by others except myself.
+Each step will ask users for prompts (yes/no). One value you have to manually input for `autoChallenge` is the synapse entity Id of submitted docker repo ([read more](https://github.com/rrchai/autoChallenge#to-do)).
 
 ## Installation
 

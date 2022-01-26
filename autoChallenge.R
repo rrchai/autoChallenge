@@ -43,7 +43,7 @@ source("load.R")
 confirm(
   sprintf(
     "Do you argee to use '%s' as the synapse account to create the Challenge ?",
-    Sys.getenv("SYNAPSE_USERNAME")
+    env$SYNAPSE_USERNAME
   )
 )
 
@@ -113,13 +113,15 @@ msg <- glue(
       <a href="{remote_repo_url}" target="_blank">Workflow Github Repo</a>
     </li>
   </ul>
+  <br>
+  You will receive emails for more details about the status of your testing submission.
   '
 )
 user_id <- synObj$getUserProfile(synObj$username)["ownerId"]
 invisible(
   synObj$sendMessage(
     userIds = list(user_id), 
-    messageSubject = glue("Links - {challenge_name}"),
+    messageSubject = glue("Congratulations! You have set up '{challenge_name}' Challenge"),
     messageBody = msg, 
     contentType = "text/html"
   )

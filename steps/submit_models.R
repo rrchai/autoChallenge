@@ -34,7 +34,7 @@ system(
   glue(
     "
     docker tag {docker_image_name} {docker_submit_name};
-    docker login docker.synapse.org;
+    docker login docker.synapse.org -u {env$SYNAPSE_USERNAME} -p {env$SYNAPSE_PASSWORD};
     docker push {docker_submit_name};
     {rm_container};
     docker image rm {docker_image_name} {docker_submit_name} 
