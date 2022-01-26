@@ -15,28 +15,35 @@ Here are some steps the `autoChallenge` will automatically do for you:
 - Send the user an email with most essential links
 - Create a PR to update `main` branch of workflow repo
 
-Each step will ask users for prompts (yes/no). One value you have to manually input for `autoChallenge` is the synapse entity Id of submitted docker repo ([read more](https://github.com/rrchai/autoChallenge#to-do)).
+Each step will ask users for prompts (yes/no). One value you have to manually input for `autoChallenge` is the synapse entity Id of submitted docker repo (read [more](https://github.com/rrchai/autoChallenge#to-do)).
 
 ## Installation
 
-1.  Clone this repo :
+1.  Set up a new Amazon linux environment (_**skip this step if you run locally**_):
+
+        wget https://raw.githubusercontent.com/rrchai/autoChallenge/master/setup-instance.sh
+        bash setup-instance.sh
+        source ~/.bashrc
+
+2.  Clone this repo :
 
         git clone https://github.com/rrchai/autoChallenge.git
+        cd autoChallenge/
 
-2.  Create and activate a conda environment:
+3.  Create and activate a conda environment:
 
         conda env create -f environment.yml
         conda activate challenge_env
 
-3.  Install R packages:
+4.  Install R packages (use `sudo` if cannot install R packages and it may take a while):
 
-        R -f install-pkgs.R
+        (sudo) R -f install-pkgs.R
 
-4.  Create and modify the configuration file:
+5.  Create and modify the configuration file (Synapse credentials are required, **password will not work with `apiKey` for now**):
 
         cp .envTemplate .env
 
-5.  Config [GitHub CLI] if you haven't:
+6.  Follow the steps to config [GitHub CLI] if you haven't (press `enter` all the way and you will ask to authenticate Github CLI by pasting `one-time code` provided to Github website):
 
         gh auth login
 

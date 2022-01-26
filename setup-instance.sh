@@ -22,13 +22,15 @@ wget https://repo.anaconda.com/archive/Anaconda3-2021.11-Linux-x86_64.sh -O ~/an
 bash ~/anaconda.sh -b
 source ~/anaconda3/bin/activate
 conda init
-
-# Install cwl
-pip3 install cwltool -y
+rm -f ~/anaconda.sh
 
 # Install R
 sudo amazon-linux-extras install R4 -y
 
-# Allow for non-root user to manage docker
+# Allow for non-root user to manage R
 sudo groupadd R
 sudo usermod -aG R $USER
+
+# Message
+echo "~~~~~ You Amazon linux environment has been set up ~~~~~"
+
