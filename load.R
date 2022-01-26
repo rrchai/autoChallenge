@@ -21,6 +21,12 @@ synObj <- syn$Synapse()
 env <- read.delim(".env", comment.char = "#", header = FALSE, sep = "=")
 env <- setNames(as.list(env[[2]]), env[[1]])
 
+for (var in c("SYNAPSE_USERNAME", "SYNAPSE_USERNAME")) {
+  if (is.null(env[var]) || nchar(env[var]) == 0) {
+    stop(sprintf("'%s' you provided is empty", var))
+  }
+}
+
 # login to synapse
 synObj$login(
   email = env$SYNAPSE_USERNAME,
