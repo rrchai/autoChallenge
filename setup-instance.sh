@@ -9,6 +9,7 @@ sudo service docker start
 # Allow for non-root user to manage docker
 sudo groupadd docker
 sudo usermod -aG docker $USER
+sudo chmod 666 /var/run/docker.sock
 
 # Install docker-compose
 sudo curl -L \
